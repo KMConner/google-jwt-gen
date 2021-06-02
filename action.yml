@@ -1,0 +1,25 @@
+name: 'Generate JWT of Google service account'
+description: 'Generate JWT of Google service account'
+inputs:
+  service-account:
+    description: 'Base64 encoded json file of service account key.'
+    required: true
+  scope:
+    description: 'OAuth 2.0 scope that the application requests.'
+    required: true
+outputs:
+  jwt:
+    description: "JWT"
+    value: ${{ steps.jwt-gen.outputs.token }}
+runs:
+  using: "composite"
+  steps:
+    - id: jwt-gen
+      run: |
+        TOKEN=$(${{ github.action_path }}/entrypoint.sh)
+        echo "::add-mask::$TOKEN"
+        echo "::set-output name=token::$(echo $TOKEN)"
+      shell: bash
+      env:
+        KEY_FILE_CONTENT: ${{ inputs.service-account }}
+        SCOPE: ${{ inputs.scope }}
