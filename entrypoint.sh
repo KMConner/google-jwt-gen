@@ -15,7 +15,7 @@ private_key=$(echo $KEY_FILE_CONTENT | base64 -d | jq -r .private_key)
 sa_email=$(echo $KEY_FILE_CONTENT | base64 -d | jq -r .client_email)
 
 header='{"alg":"RS256","typ":"JWT"}'
-claim=$(cat <<EOF | jq -c
+claim=$(cat <<EOF | jq -c .
   {
     "iss": "$sa_email",
     "scope": "$SCOPE",
