@@ -30,7 +30,7 @@ signature=$(openssl dgst -sha256 -sign <(echo "$private_key") <(printf "$request
 
 JWT="$request_body.$signature"
 
-curl -sS -X POST https://www.googleapis.com/oauth2/v4/token \
+curl -sSf -X POST https://www.googleapis.com/oauth2/v4/token \
     --data-urlencode 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer' \
     --data-urlencode "assertion=$JWT" \
     | jq -r .access_token
